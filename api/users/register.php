@@ -19,26 +19,17 @@
   $data = json_decode(file_get_contents("php://input"));
 
   $user->username = $data->username;
+  $user->email = $data->email;
   $user->password = $data->password;
+  $user->age = $data->age;
 
-  if($user->get_user()){
-    //start sessioin
-    session_start();
-    $_SESSION['user']=$user->username;
-    $_SESSION['role']=$user->role;
-    //create array
-    $user_arr = array(
-      'id' => $user->id,
-      'username' => $user->username,
-      'email' => $user->email,
-      'role' => $user->role
+  if($user->create_user()){
+    echo json_encode(
+      array('message' => 'User registered Successfully.')
     );
-    //make json
-    print_r(json_encode($user_arr));
-    
   }else{
     echo json_encode(
-      array('message' => 'Invalid Username or Password.')
+      array('message' => 'There was a problem in registering user.')
     );
   }
 
