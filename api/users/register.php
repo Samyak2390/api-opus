@@ -27,10 +27,6 @@
     echo json_encode(
       array('message' => 'User registered Successfully.')
     );
-  }else{
-    echo json_encode(
-      array('message' => 'There was a problem in registering user.')
-    );
   }
 
   
