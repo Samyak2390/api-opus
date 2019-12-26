@@ -28,12 +28,6 @@ header('content-type: multipart/form-data; charset=utf-8');
 
   $data = json_decode($_POST['data'],true);
 
-  $filename = $_FILES['imageFile']["name"];
-  echo $filename;
-
-
-  print_r($data);
-
   $item->bookname = $data['bookname'];
   $item->author = $data['author'];
   $item->year = $data['year'];
@@ -44,7 +38,6 @@ header('content-type: multipart/form-data; charset=utf-8');
   $item->category = $data['category'];
   $item->image = $data['image'];
   $item->description = $data['description'];
-  
 
   if($item->add_item()){
     echo json_encode(

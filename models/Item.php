@@ -1,5 +1,6 @@
 <?php 
   include_once 'Validate_item.php';
+  // define ('SITE_ROOT', realpath(dirname(__FILE__)));
   class Item{
     private $conn;
     private $tableBooks = 'book';
@@ -100,6 +101,9 @@
                         "category" => $this->category,
                         "image" => $this->image,
                         "description" => $this->description);
+
+          echo "printing data";
+          print_r($data);
         
           $validation = new Validate_item($data);
           $errors = $validation->validateForm();
@@ -112,13 +116,14 @@
             return false;
           }
           //handle image upload
-          if(!empty($this->imageFile) && is_uploaded_file($_FILES['imageFile']["tmp_name"])){
+          if(is_uploaded_file($_FILES['imageFile']["tmp_name"])){
             $filetmp = $_FILES['imageFile']["tmp_name"];
             $filename = $_FILES['imageFile']["name"];
             $filetype = $_FILES['imageFile']["type"];
             $filesize = $_FILES['imageFile']["size"];
 
-            $uploadDir = '../images/'.$filename;
+            //have to change this
+            $uploadDir = $_SERVER['DOCUMENT_ROOT'].'/WAT/wat2019/api-opus/images/'.$filename;
 
             if($filetype != "image/jpeg" && $filetype != "image/png" && $filetype != "image/gif"){
               echo json_encode(
@@ -178,7 +183,7 @@
           $stmtCategory->execute();
           $categoryId = $this->conn->lastInsertId();
 
-          $addItem = "INSERT INTO $this->$tableBooks 
+          $addItem = "INSERT INTO book
                       SET bookname =:bookname, 
                           year = :year, 
                           pages = :pages, 
