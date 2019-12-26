@@ -20,7 +20,7 @@
     public $rating;
     public $category;
     public $image;
-    public $imageFile;
+    // public $imageFile;
     public $description;
 
     //constructor with db
@@ -60,12 +60,11 @@
           $this->rating = trim(htmlspecialchars(strip_tags($this->rating)));
           $this->category = trim(htmlspecialchars(strip_tags($this->category)));
           $this->image = trim(htmlspecialchars(strip_tags($this->image)));
-          $this->imageFile = trim(htmlspecialchars(strip_tags($this->imageFile)));
           $this->description = trim(htmlspecialchars(strip_tags($this->description)));
 
 
           //check if empty
-          if(empty($this->bookname) || empty($this->author)|| empty($this->pages)|| empty($this->pulbisher)
+          if(empty($this->bookname) || empty($this->author)|| empty($this->pages)|| empty($this->publisher)
           || empty($this->price)|| empty($this->year)|| empty($this->rating)|| empty($this->category)
           || empty($this->description)){
             echo json_encode(
@@ -75,7 +74,7 @@
             return false;
           }
 
-          if(empty($this->image) && empty($this->imageFile)){
+          if(empty($this->image) && !is_uploaded_file($_FILES['imageFile']["tmp_name"])){
             echo json_encode(
               array('message' => 'Atleast one image is required.')
             );
@@ -83,7 +82,7 @@
             return false;
           }
 
-          if(!empty($this->image) && !empty($this->imageFile)){
+          if(!empty($this->image) && is_uploaded_file($_FILES['imageFile']["tmp_name"])){
             echo json_encode(
               array('message' => 'Only one image is required.')
             );
@@ -96,7 +95,7 @@
                         "year" => $this->year,
                         "pages" => $this->pages,
                         "publisher" => $this->publisher,
-                        "price" => $this->bookname,
+                        "price" => $this->price,
                         "rating" => $this->rating,
                         "category" => $this->category,
                         "image" => $this->image,
@@ -113,11 +112,11 @@
             return false;
           }
           //handle image upload
-          if(!empty($this->imageFile) && is_uploaded_file($_FILES[$this->imageFile]["tmp_name"])){
-            $filetmp = $_FILES[$this->imageFile]["tmp_name"];
-            $filename = $_FILES[$this->imageFile]["name"];
-            $filetype = $_FILES[$this->imageFile]["type"];
-            $filesize = $_FILES[$this->imageFile]["size"];
+          if(!empty($this->imageFile) && is_uploaded_file($_FILES['imageFile']["tmp_name"])){
+            $filetmp = $_FILES['imageFile']["tmp_name"];
+            $filename = $_FILES['imageFile']["name"];
+            $filetype = $_FILES['imageFile']["type"];
+            $filesize = $_FILES['imageFile']["size"];
 
             $uploadDir = '../images/'.$filename;
 

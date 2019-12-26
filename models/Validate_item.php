@@ -1,6 +1,6 @@
 <?php 
   // include_once '../../config/Database.php';
-  class Validate_user{
+  class Validate_item{
     private $data;
     private $errors = [];
     private $db;
