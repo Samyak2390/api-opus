@@ -153,7 +153,7 @@
           $prepGetAuthor = $this->conn->prepare($getAuthor);
           if($prepGetAuthor->execute()){
             $row = $prepGetAuthor->fetch(PDO::FETCH_ASSOC);
-            if(sizeof($row) > 0){
+            if(!empty($row) && sizeof($row) > 0){
               $authorId = $row['author_id'];
             }else{
               $addAuthor = "INSERT INTO $this->tableAuthor SET author_name = :authorName";
@@ -169,7 +169,7 @@
           $prepGetPublisher = $this->conn->prepare($getPublisher);
           if($prepGetPublisher->execute()){
             $row = $prepGetPublisher->fetch(PDO::FETCH_ASSOC);
-            if(sizeof($row) > 0){
+            if(!empty($row) && sizeof($row) > 0){
               $publisherId = $row['publisher_id'];
             }else{
               $addPublisher = "INSERT INTO $this->tablePublisher SET publisher_name = :publisherName";
@@ -185,8 +185,8 @@
           $prepGetCategory = $this->conn->prepare($getCategory);
           if( $prepGetCategory->execute()){
             $row =  $prepGetCategory->fetch(PDO::FETCH_ASSOC);
-            if(sizeof($row) > 0){
-              $publisherId = $row['category_id'];
+            if(!empty($row) && sizeof($row) > 0){
+              $categoryId = $row['category_id'];
             }else{
               $addCategory = "INSERT INTO $this->tableCategory SET category_name = :categoryName";
               $stmtCategory = $this->conn->prepare($addCategory);
@@ -227,17 +227,21 @@
             return true;
           }else{
             //delete from all the previous tables that were inserted
+            echo 'here';
             $deleteAuthor = "DELETE * FROM author WHERE author_id= $authorId";
             $deletePublisher = "DELETE * FROM publisher WHERE publisher_id = $publisherId";
             $deleteCategory = "DELETE * FROM category WHERE category_id = $categoryId";
+            $deleteImage = "DELETE * FROM image WHERE image_id = $imageId";
 
             $delAuthor = $this->conn->prepare($deleteAuthor);
             $delPublisher = $this->conn->prepare($deletePublisher);
             $delCategory = $this->conn->prepare($deleteCategory);
+            $delImage = $this->conn->prepare($deleteImage);
 
             $delAuthor->execute();
             $delPublisher->execute();
-            $delCategoryr->execute();
+            $delCategory->execute();
+            $delImage->execute();
 
             echo json_encode(
               array('message' => 'Something went wrong while adding Item!')
@@ -250,6 +254,7 @@
           echo json_encode(
             array('message' => $this->error)
           );
+          http_response_code(400);
           return false;
         }
   }
