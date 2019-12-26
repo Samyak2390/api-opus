@@ -1,6 +1,6 @@
 <?php 
   include_once 'Validate_item.php';
-  class User{
+  class Item{
     private $conn;
     private $tableBooks = 'book';
     private $tableAuthor = 'author';
@@ -186,10 +186,10 @@
                           price = :price, 
                           rating = :rating, 
                           description = :description,
-                          author = :author_id,
-                          publisher=:publisher_id,
-                          category = :category_id,
-                          image = :image_id";
+                          author_id = :author_id,
+                          publisher_id=:publisher_id,
+                          category_id = :category_id,
+                          image_id = :image_id";
 
           $stmt = $this->conn->prepare($addItem);
 

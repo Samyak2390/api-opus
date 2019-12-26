@@ -26,20 +26,20 @@ header('content-type: application/json; charset=utf-8');
   //Get raw posted data
   $data = json_decode(file_get_contents("php://input"));
 
-  $item->username = $data->username;
-  $item->username = $data->username;
-  $item->username = $data->username;
-  $item->username = $data->username;
-  $item->username = $data->username;
-  $item->username = $data->username;
-  $item->username = $data->username;
-  $item->username = $data->username;
-  $item->username = $data->username;
-  $item->username = $data->username;
-  $item->username = $data->username;
+  $item->bookname = $data->bookname;
+  $item->author = $data->author;
+  $item->year = $data->year;
+  $item->pages = $data->pages;
+  $item->publisher = $data->publisher;
+  $item->price = $data->price;
+  $item->rating = $data->rating;
+  $item->category = $data->category;
+  $item->image = $data->image;
+  $item->imageFile = $data->imageFile;
+  $item->description = $data->description;
   
 
-  if($user->add_item()){
+  if($item->add_item()){
     echo json_encode(
       array('message' => 'User registered Successfully.')
     );
