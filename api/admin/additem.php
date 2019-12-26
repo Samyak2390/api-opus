@@ -24,8 +24,6 @@ header('content-type: multipart/form-data; charset=utf-8');
   $item = new Item($db);
 
   //Get raw posted data
-  // $data = json_decode(file_get_contents("php://input"));
-
   $data = json_decode($_POST['data'],true);
 
   $item->bookname = $data['bookname'];
