@@ -33,6 +33,7 @@ header('content-type: multipart/form-data; charset=utf-8');
   $item->publisher = $data['publisher'];
   $item->price = $data['price'];
   $item->rating = $data['rating'];
+  $item->bestseller = $data['bestseller'];
   $item->category = $data['category'];
   $item->image = $data['image'];
   $item->description = $data['description'];

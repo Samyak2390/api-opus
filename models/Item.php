@@ -19,6 +19,7 @@
     public $pulbisher;
     public $price;
     public $rating;
+    public $bestseller;
     public $category;
     public $image;
     public $description;
@@ -38,6 +39,7 @@
           $this->price = trim(htmlspecialchars(strip_tags($this->price)));
           $this->year = trim(htmlspecialchars(strip_tags($this->year)));
           $this->rating = trim(htmlspecialchars(strip_tags($this->rating)));
+          $this->bestseller = trim(htmlspecialchars(strip_tags($this->bestseller)));
           $this->category = strtolower(trim(htmlspecialchars(strip_tags($this->category))));
           $this->image = strtolower(trim(htmlspecialchars(strip_tags($this->image))));
           $this->description = strtolower(trim(htmlspecialchars(strip_tags($this->description))));
@@ -45,7 +47,7 @@
 
           //check if empty
           if(empty($this->bookname) || empty($this->author)|| empty($this->pages)|| empty($this->publisher)
-          || empty($this->price)|| empty($this->year)|| empty($this->rating)|| empty($this->category)
+          || empty($this->price)|| empty($this->year)|| empty($this->rating) || empty($this->bestseller) || empty($this->category)
           || empty($this->description)){
             echo json_encode(
               array('message' => 'All fields are Required.')
@@ -77,12 +79,10 @@
                         "publisher" => $this->publisher,
                         "price" => $this->price,
                         "rating" => $this->rating,
+                        "bestseller" => $this->bestseller,
                         "category" => $this->category,
                         "image" => $this->image,
                         "description" => $this->description);
-
-          echo "printing data";
-          print_r($data);
         
           $validation = new Validate_item($data);
           $errors = $validation->validateForm();
@@ -202,6 +202,7 @@
                           pages = :pages, 
                           price = :price, 
                           rating = :rating, 
+                          bestseller = :bestseller,
                           description = :description,
                           author_id = :author_id,
                           publisher_id=:publisher_id,
@@ -215,6 +216,7 @@
           $stmt->bindParam(':pages', $this->pages);
           $stmt->bindParam(':price', $this->price);
           $stmt->bindParam(':rating', $this->rating);
+          $stmt->bindParam(':bestseller', $this->bestseller);
           $stmt->bindParam(':description', $this->description);
           $stmt->bindParam(':author_id', $authorId);
           $stmt->bindParam(':publisher_id', $publisherId);
@@ -236,6 +238,12 @@
             $delAuthor->execute();
             $delPublisher->execute();
             $delCategoryr->execute();
+
+            echo json_encode(
+              array('message' => 'Something went wrong while adding Item!')
+            );
+            http_response_code(400);
+            return false;
           }
         }catch(PDOException $e){
           $this->error = 'Error: ' . $e -> getMessage();
