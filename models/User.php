@@ -2,7 +2,7 @@
   include_once 'Validate_user.php';
   class User{
     private $conn;
-    private $table = 'user';
+    private $table = 'users';
 
     //post properties
 
@@ -125,6 +125,10 @@
           $this->role = $row['role'];
           return true;
         }else{
+          echo json_encode(
+            array('message' => 'Invalid Username or Password.')
+          );
+          http_response_code(400);
           return false;
         }
       }

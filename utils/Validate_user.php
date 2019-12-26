@@ -20,7 +20,7 @@
 
     private function validateUsername(){
       $val = $this->data['username'];
-      $query = "SELECT * FROM users WHERE username='$val'";
+      $query = "SELECT * FROM user WHERE username='$val'";
 
       $stmt = $this->db->prepare($query);
       $stmt->execute();
@@ -34,7 +34,7 @@
 
     private function validateEmail(){
       $val = $this->data['email'];
-      $query = "SELECT * FROM users WHERE email='$val'";
+      $query = "SELECT * FROM user WHERE email='$val'";
 
       $stmt = $this->db->prepare($query);
       $stmt->execute();

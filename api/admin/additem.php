@@ -13,7 +13,7 @@ header("Access-Control-Allow-Origin: *");
 header('content-type: application/json; charset=utf-8');
 
   include_once '../../config/Database.php';
-  include_once '../../models/User.php';
+  include_once '../../models/Item.php';
 
   //Instantiate db and connect
 
@@ -21,17 +21,25 @@ header('content-type: application/json; charset=utf-8');
   $db = $database->connect();
 
   //Instantiate  object
-  $user = new User($db);
+  $item = new Item($db);
 
   //Get raw posted data
   $data = json_decode(file_get_contents("php://input"));
 
-  $user->username = $data->username;
-  $user->email = $data->email;
-  $user->password = $data->password;
-  $user->age = $data->age;
+  $item->username = $data->username;
+  $item->username = $data->username;
+  $item->username = $data->username;
+  $item->username = $data->username;
+  $item->username = $data->username;
+  $item->username = $data->username;
+  $item->username = $data->username;
+  $item->username = $data->username;
+  $item->username = $data->username;
+  $item->username = $data->username;
+  $item->username = $data->username;
+  
 
-  if($user->create_user()){
+  if($user->add_item()){
     echo json_encode(
       array('message' => 'User registered Successfully.')
     );
