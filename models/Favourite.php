@@ -68,7 +68,15 @@
           return false;
         }
       }
+    }
 
+    public function delete_all_favourite(){
+      if(isset($_COOKIE['favourite'])){
+        setcookie('favourite', json_encode(array()), time()-30*24*60*60);
+        return true;
+      }else{
+        return false;
+      }
     }
 
   }
