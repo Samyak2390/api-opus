@@ -29,7 +29,6 @@
           //remove duplicates from array
           $favArray=array_unique($favArray);
           setcookie('favourite', json_encode($favArray), time()+30*24*60*60);
-          print_r($favArray);
           return true;
         }
       }else{
@@ -52,6 +51,24 @@
       $stmt = $this->conn->prepare($query);
       $stmt->execute();
       return $stmt;
+    }
+
+    public function delete_favourite(){
+      if(isset($_COOKIE['favourite'])){
+        $favArray = json_decode($_COOKIE['favourite'], true);
+        if(in_array($this->book_id, $favArray)){
+          $index = array_search($this->book_id, $favArray);
+          array_splice($favArray, $index,1);
+          //remove duplicates from array
+          $favArray=array_unique($favArray);
+          setcookie('favourite', json_encode($favArray), time()+30*24*60*60);
+          print_r($favArray);
+          return true;
+        }else{
+          return false;
+        }
+      }
+
     }
 
   }
