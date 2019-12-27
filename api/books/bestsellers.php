@@ -20,10 +20,10 @@ header('content-type: application/json; charset=utf-8');
   $db = $database->connect();
 
   //Instantiate  object
-  $getRatedItems = new GetItem($db);
+  $getBestsellers = new GetItem($db);
 
   //Getting items query
-  $result = $getRatedItems->get_max_rated_books();
+  $result = $getBestsellers->get_bestsellers();
   //Get row count
   $num = $result->rowCount();
   //check if any items
