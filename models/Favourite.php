@@ -3,6 +3,7 @@
   class Favourite{
     private $conn;
     public $book_id;
+    public $idArray;
     //constructor with db
     public function __construct($db){
       $this->conn = $db;
@@ -39,6 +40,18 @@
 
       }
       return false;
+    }
+
+    public function get_favourite(){
+      $query = 'SELECT book_id, bookname, price, rating, description, author_name, image_name 
+                FROM book, author, image
+                WHERE book.author_id = author.author_id 
+                AND book.image_id = image.image_id
+                AND book_id IN ('.implode(',', $this->idArray).') ORDER BY rating DESC ';
+      
+      $stmt = $this->conn->prepare($query);
+      $stmt->execute();
+      return $stmt;
     }
 
   }
