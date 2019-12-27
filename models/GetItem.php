@@ -1,6 +1,7 @@
 <?php 
   
   class GetItem{
+    private $conn;
     //constructor with db
     public function __construct($db){
       $this->conn = $db;

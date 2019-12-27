@@ -43,7 +43,7 @@ header('content-type: application/json; charset=utf-8');
         'rating' => $rating,
         'description' => $description,
         'author_name' => $author_name,
-        'image_url' => $_SERVER['DOCUMENT_ROOT'].'/WAT/wat2019/api-opus/images/'.$image_name
+        'image_url' => 'http://localhost/WAT/wat2019/api-opus/images/'.$image_name
       );
 
       // Push 10 items to "data"
