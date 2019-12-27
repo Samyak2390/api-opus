@@ -1,14 +1,14 @@
 <?php 
  if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-  header('Access-Control-Allow-Origin: *');
+  header('Access-Control-Allow-Origin: http://localhost:8081');
   header('Access-Control-Allow-Methods: GET');
-  header('Access-Control-Allow-Headers: Authorization, Content-Type');
+  header('Access-Control-Allow-Headers: Authorization, Content-Type, withCredentials');
   header('Access-Control-Max-Age: 1728000');
+  header('Access-Control-Allow-Credentials: true');
   header('Content-Length: 0');
   die();
 }
-
-header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Origin: http://localhost:8081');
 header('content-type: application/json; charset=utf-8');
 
   include_once '../../config/Database.php';
@@ -21,7 +21,7 @@ header('content-type: application/json; charset=utf-8');
 
   //Instantiate  object
   $fav = new Favourite($db);
-
+  print_r($_COOKIE);
   if(isset($_COOKIE['favourite'])){
     $favArray = json_decode($_COOKIE['favourite'], true);
     $fav->idArray = $favArray;
@@ -62,6 +62,10 @@ header('content-type: application/json; charset=utf-8');
         array('message' => 'You have no Favourites.')
       );
     }
+  }else{
+    echo json_encode(
+      array('message' => 'You have no Favourites.')
+    );
   }
 
   
