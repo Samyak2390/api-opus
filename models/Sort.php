@@ -10,16 +10,23 @@
     }
 
     public function sort_data(){
-      $query = "SELECT book_id, year, bookname, price, rating, description, author_name, image_name 
+      $this->category = strtolower(htmlspecialchars(strip_tags($this->category)));
+      $this->sortby = strtolower(htmlspecialchars(strip_tags($this->sortby)));
+
+      if($this->category === 'all'){
+        $query = "SELECT book_id, year, bookname, price, rating, description, author_name, image_name 
+                FROM book, author, image, category
+                WHERE book.author_id = author.author_id 
+                AND book.image_id = image.image_id 
+                AND book.category_id = category.category_id ";
+      }else{
+        $query = "SELECT book_id, year, bookname, price, rating, description, author_name, image_name 
                 FROM book, author, image, category
                 WHERE book.author_id = author.author_id 
                 AND book.image_id = image.image_id 
                 AND book.category_id = category.category_id
                 AND category_name = :category_name ";
-      
-      $this->category = strtolower(htmlspecialchars(strip_tags($this->category)));
-      $this->sortby = strtolower(htmlspecialchars(strip_tags($this->sortby)));
-      //High Rating to Low', 'Low Rating to High', 'High Price to Low', 'Low Price to High', 'Newest to Oldest', 'Oldest to Newest'
+      }
       switch($this->sortby){
         case 'high rating to low':
           $query .= 'ORDER BY rating DESC';
