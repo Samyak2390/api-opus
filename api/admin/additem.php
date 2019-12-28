@@ -35,7 +35,9 @@ header('content-type: multipart/form-data; charset=utf-8');
   $item->rating = $data['rating'];
   $item->bestseller = $data['bestseller'];
   $item->category = $data['category'];
-  $item->image = $data['image'];
+  if(isset($data['image'])){
+    $item->image = $data['image'];
+  }
   $item->description = $data['description'];
 
   if($item->add_item()){

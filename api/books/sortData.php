@@ -12,7 +12,7 @@ header("Access-Control-Allow-Origin: *");
 header('content-type: application/json; charset=utf-8');
 
   include_once '../../config/Database.php';
-  include_once '../../models/Category.php';
+  include_once '../../models/Sort.php';
 
   //Instantiate db and connect
 
@@ -20,14 +20,15 @@ header('content-type: application/json; charset=utf-8');
   $db = $database->connect();
 
   //Instantiate  object
-  $cat = new Category($db);
+  $sort = new Sort($db);
 
   //Get raw posted data
   $data = json_decode(file_get_contents("php://input"));
  
-  $cat->category = $data->category;
+  $sort->category = $data->category;
+  $sort->sortby = $data->sortby;
   //Getting items query
-  $result = $cat->get_category_data();
+  $result = $sort->sort_data();
   //Get row count
   $num = $result->rowCount();
   //check if any items
@@ -44,6 +45,7 @@ header('content-type: application/json; charset=utf-8');
         'price' => $price,
         'rating' => $rating,
         'description' => $description,
+        'year' => $year,
         'author_name' => $author_name,
         'image_url' => 'http://localhost/WAT/wat2019/api-opus/images/'.$image_name
       );

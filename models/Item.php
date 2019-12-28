@@ -44,10 +44,9 @@
           $this->image = strtolower(trim(htmlspecialchars(strip_tags($this->image))));
           $this->description = strtolower(trim(htmlspecialchars(strip_tags($this->description))));
 
-
           //check if empty
           if(empty($this->bookname) || empty($this->author)|| empty($this->pages)|| empty($this->publisher)
-          || empty($this->price)|| empty($this->year)|| empty($this->rating) || empty($this->bestseller) || empty($this->category)
+          || empty($this->price)|| empty($this->year)|| empty($this->rating) || !isset($this->bestseller) || empty($this->category)
           || empty($this->description)){
             echo json_encode(
               array('message' => 'All fields are Required.')
