@@ -1,7 +1,7 @@
 <?php 
   include_once 'Validate_item.php';
   // define ('SITE_ROOT', realpath(dirname(__FILE__)));
-  class Item{
+  class Update{
     private $conn;
     private $tableBooks = 'book';
     private $tableAuthor = 'author';
@@ -23,13 +23,14 @@
     public $category;
     public $image;
     public $description;
+    public $book_id;
 
     //constructor with db
     public function __construct($db){
       $this->conn = $db;
     }
 
-    public function add_item(){
+    public function update_item(){
       try{
           //clean data
           $this->bookname = strtolower(trim(htmlspecialchars(strip_tags($this->bookname))));
@@ -41,7 +42,7 @@
           $this->rating = trim(htmlspecialchars(strip_tags($this->rating)));
           $this->bestseller = trim(htmlspecialchars(strip_tags($this->bestseller)));
           $this->category = strtolower(trim(htmlspecialchars(strip_tags($this->category))));
-          $this->image = strtolower(trim(htmlspecialchars(strip_tags($this->image))));
+          $this->image = trim(htmlspecialchars(strip_tags($this->image)));
           $this->description = strtolower(trim(htmlspecialchars(strip_tags($this->description))));
 
           //check if empty
@@ -55,7 +56,6 @@
             return false;
           }
 
-          //if both image fields are empty
           if(empty($this->image) && !isset($_FILES['imageFile']["tmp_name"])){
             echo json_encode(
               array('message' => 'Atleast one image is required.')
@@ -120,7 +120,7 @@
                 http_response_code(400);
                 return false;
               }else{
-                $addImage = "INSERT INTO $this->tableImage SET image_name = :imageName";
+                $addImage = "INSERT $this->tableImage SET image_name = :imageName";
                 $stmtImage = $this->conn->prepare($addImage);
                 $stmtImage->bindParam(':imageName', $filename);
                 if(move_uploaded_file($filetmp, $uploadDir) && $stmtImage->execute()){
@@ -129,9 +129,8 @@
               }
             }
           }
-          
 
-          //if already upoaded image is chosen
+          //if already uploaded image is chosen
 
           if(!empty($this->image) && !isset($_FILES['imageFile']["tmp_name"])){
             //get image id for that file name
@@ -199,7 +198,7 @@
             }
           }
 
-          $addItem = "INSERT INTO book
+          $updateItem = "UPDATE book
                       SET bookname =:bookname, 
                           year = :year, 
                           pages = :pages, 
@@ -210,10 +209,12 @@
                           author_id = :author_id,
                           publisher_id=:publisher_id,
                           category_id = :category_id,
-                          image_id = :image_id";
+                          image_id = :image_id
+                      WHERE book_id = :book_id";
 
-          $stmt = $this->conn->prepare($addItem);
+          $stmt = $this->conn->prepare($updateItem);
 
+          $stmt->bindParam(':book_id', $this->book_id);
           $stmt->bindParam(':bookname', $this->bookname);
           $stmt->bindParam(':year', $this->year);
           $stmt->bindParam(':pages', $this->pages);
@@ -227,6 +228,7 @@
           $stmt->bindParam(':image_id', $imageId);
 
           if($stmt->execute()){
+            // delete rows that are not referenced
             return true;
           }else{
             //delete from all the previous tables that were inserted
@@ -247,7 +249,7 @@
             $delImage->execute();
 
             echo json_encode(
-              array('message' => 'Something went wrong while adding Item!')
+              array('message' => 'Something went wrong while updating Item!')
             );
             http_response_code(400);
             return false;

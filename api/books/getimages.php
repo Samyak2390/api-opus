@@ -23,7 +23,7 @@ header('content-type: application/json; charset=utf-8');
   $getAll= new GetItem($db);
 
   //Getting items query
-  $result = $getAll->get_all_items();
+  $result = $getAll->get_all_images();
   //Get row count
   $num = $result->rowCount();
   //check if any items
@@ -35,28 +35,14 @@ header('content-type: application/json; charset=utf-8');
     //book_id, bookname,year, pages, price, rating, bestseller, description, author_name, publisher_name, category_name, image_name 
     while($row=$result->fetch(PDO::FETCH_ASSOC)){
       extract($row);
-      $book_items = array(
-        'book_id' => $book_id,
-        'bookname' => $bookname,
-        'year' => $year,
-        'pages' => $pages,
-        'price' => $price,
-        'rating' => $rating,
-        'bestseller' => $bestseller,
-        'description' => $description,
-        'author' => $author_name,
-        'publisher' => $publisher_name,
-        'category' => $category_name,
-        'image' => $image_name
-      );
-      array_push($items_arr['data'], $book_items);
+      array_push($items_arr['data'], $image_name);
     }
     //Turn to JSON & output
     echo json_encode($items_arr);
   }else{
     //No posts
     echo json_encode(
-      array('message' => 'No Items Found')
+      array('message' => 'No Images Found')
     );
   }
 

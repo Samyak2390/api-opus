@@ -73,6 +73,16 @@
       return $stmt;
     }
 
+    public function get_all_images(){
+      //create query
+      $query = "SELECT image_name FROM image";
+
+      //prepare and execute statement
+      $stmt = $this->conn->prepare($query);
+      $stmt->execute();
+      return $stmt;
+    }
+
 
 
   }
