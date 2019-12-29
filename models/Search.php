@@ -28,25 +28,28 @@
         while($row=$stmtCat->fetch(PDO::FETCH_ASSOC)){
           extract($row);
           // array_push($items_arr['data'], $category_name);
-          switch($this->category){
-            case $category_name:
-              // $query .= 'AND category_name = '.$category_name.' AND LOWER(' trees.title '') LIKE  '%elm%';
-              if($this->searchText){
-                $query .= " AND category_name = '$category_name') AND 
-                        (LOWER(author_name) LIKE '%$this->searchText%' OR LOWER(bookname) LIKE '%$this->searchText%')";
-              }else{
-                $query .= " AND category_name = '$category_name')";
-              }
-            break 2;
-
-            default:
-              $query .= ') ORDER BY rating DESC';
-            break 2;
+          if($this->category == $category_name){
+            if(!empty($this->searchText)){
+              $query .= " AND category_name = '$category_name') AND 
+                      (LOWER(author_name) LIKE '%$this->searchText%' OR LOWER(bookname) LIKE '%$this->searchText%')";
+              break;
+            }else{
+              $query .= " AND category_name = '$category_name')";
+              break;
+            }
           }
         }
 
+        if(!empty($this->category) && $this->category != $category_name){
+          if(!empty($this->searchText)){
+            $query .= ") AND (LOWER(author_name) LIKE '%$this->searchText%' OR LOWER(bookname) LIKE '%$this->searchText%')";
+          }else{
+            $query .= ') ORDER BY rating DESC';
+          }
+        }
       }
 
+      // echo $query;
       $stmt = $this->conn->prepare($query);
       $stmt->execute();
       return $stmt;
