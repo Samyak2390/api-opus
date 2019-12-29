@@ -229,6 +229,7 @@
 
           if($stmt->execute()){
             // delete rows that are not referenced
+            //delete from author where author_id not in (select author_id from book)
             return true;
           }else{
             //delete from all the previous tables that were inserted
