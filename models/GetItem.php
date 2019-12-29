@@ -57,6 +57,23 @@
       return $stmt;
     }
 
+    public function get_all_items(){
+      //create query
+      $query = "SELECT book_id, bookname,year, pages, price, rating, bestseller, description, author_name, publisher_name, category_name, image_name 
+                FROM book, author, image, publisher, category
+                WHERE book.author_id = author.author_id 
+                AND book.image_id = image.image_id 
+                AND book.publisher_id = publisher.publisher_id
+                AND book.category_id = category.category_id
+                ORDER BY book_id DESC";
+
+      //prepare and execute statement
+      $stmt = $this->conn->prepare($query);
+      $stmt->execute();
+      return $stmt;
+    }
+
+
 
   }
 ?>
