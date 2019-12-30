@@ -21,6 +21,7 @@
         if(!isset($_COOKIE['favourite'])){
           array_push($favArray, $this->book_id);
           setcookie('favourite', json_encode($favArray), time()+30*24*60*60);
+          // echo 'cookie'.$_COOKIE['favourite'];
           return true;
         }
         if(isset($_COOKIE['favourite'])){
@@ -29,6 +30,7 @@
           //remove duplicates from array
           $favArray=array_unique($favArray);
           setcookie('favourite', json_encode($favArray), time()+30*24*60*60);
+          // echo 'cookie'.$_COOKIE['favourite'];
           return true;
         }
       }else{
