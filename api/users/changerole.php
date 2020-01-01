@@ -28,7 +28,7 @@ header('content-type: application/json; charset=utf-8');
 
   if(!empty($data->id)){
     $user->id = $data->id;
-    if($fav->change_role()){
+    if($user->change_role()){
       //make json
       print_r(json_encode(
         array('message' => "Role has been changed successfully.")

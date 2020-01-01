@@ -154,13 +154,14 @@
      $stmtRole = $this->conn->prepare($getRole);
      $stmtRole->bindParam(':id', $this->id);
      $stmtRole->execute();
-     $stmtRole->fetch(PDO::FETCH_ASSOC);
-     if(isset($stmtRole['role'])){
-      if($stmtRole['role'] === '1'){
+     $row = $stmtRole->fetch(PDO::FETCH_ASSOC);
+     print_r($row);
+     if(isset($row['role'])){
+      if($row['role'] === '1'){
         //change to normal user
         $query = "UPDATE $this->table SET role='0' WHERE id=$this->id";
       }
-      if($stmtRole['role'] === '0'){
+      if($row['role'] === '0'){
         //change to admin
         $query = "UPDATE $this->table SET role='1' WHERE id=$this->id";
       }
