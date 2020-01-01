@@ -137,5 +137,42 @@
       printf("Error: %s.\n", $stmt->error);
       return false;
    }
+
+   public function get_all_users(){
+    //create query
+    $query = "SELECT id, username, email, role FROM $this->table u";
+
+    //prepare statement
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute();
+    return $stmt;
+   }
+
+   public function change_role(){
+     //get role
+     $getRole = "SELECT role FROM $this->table WHERE id = :id";
+     $stmtRole = $this->conn->prepare($getRole);
+     $stmtRole->bindParam(':id', $this->id);
+     $stmtRole->execute();
+     $stmtRole->fetch(PDO::FETCH_ASSOC);
+     if(isset($stmtRole['role'])){
+      if($stmtRole['role'] === '1'){
+        //change to normal user
+        $query = "UPDATE $this->table SET role='0' WHERE id=$this->id";
+      }
+      if($stmtRole['role'] === '0'){
+        //change to admin
+        $query = "UPDATE $this->table SET role='1' WHERE id=$this->id";
+      }
+     }
+
+    //prepare statement
+    $stmt = $this->conn->prepare($query);
+    if($stmt->execute()){
+      return true;
+    }else{
+      return false;
+    }
+   }
   }
 ?>

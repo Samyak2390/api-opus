@@ -1,7 +1,7 @@
 <?php 
  if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   header('Access-Control-Allow-Origin: http://localhost:8081');
-  header('Access-Control-Allow-Methods: DELETE');
+  header('Access-Control-Allow-Methods: POST');
   header('Access-Control-Allow-Headers: Authorization, Content-Type, Access-Control-Allow-Credentials');
   header('Access-Control-Max-Age: 1728000');
   header('Content-Length: 0');
@@ -13,7 +13,7 @@ header("Access-Control-Allow-Origin: http://localhost:8081");
 header('content-type: application/json; charset=utf-8');
 
   include_once '../../config/Database.php';
-  include_once '../../models/Favourite.php';
+  include_once '../../models/User.php';
 
   //Instantiate db and connect
 
@@ -21,19 +21,30 @@ header('content-type: application/json; charset=utf-8');
   $db = $database->connect();
 
   //Instantiate  object
-  $fav = new Favourite($db);
-  if($fav->delete_all_favourite()){
-    //make json
-    print_r(json_encode(
-      array('message' => "All Books have been removed from favourite.")
-    ));
+  $user = new User($db);
+
+  //Get raw posted data
+  $data = json_decode(file_get_contents("php://input"));
+
+  if(!empty($data->id)){
+    $user->id = $data->id;
+    if($fav->change_role()){
+      //make json
+      print_r(json_encode(
+        array('message' => "Role has been changed successfully.")
+      ));
+    }else{
+      print_r(json_encode(
+        array('message' => "Something went wrong while changing role.")
+      ));
+      http_response_code(400);
+    }
   }else{
     print_r(json_encode(
-      array('message' => "Something went wrong while deleting.")
+      array('message' => "Id is not given.")
     ));
     http_response_code(400);
   }
-  ?>
 
   
 

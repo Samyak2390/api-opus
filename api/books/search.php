@@ -30,7 +30,9 @@ header('content-type: application/json; charset=utf-8');
   //Getting items query
   $result = $search->search_data();
   //Get row count
-  $num = $result->rowCount();
+  if(isset($result)){
+    $num = $result->rowCount();
+  
   //check if any items
   if($num > 0){
     //Items array
@@ -61,6 +63,7 @@ header('content-type: application/json; charset=utf-8');
     );
   }
 
+}
   
 
   

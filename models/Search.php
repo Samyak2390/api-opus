@@ -14,6 +14,22 @@
                 WHERE (book.author_id = author.author_id 
                 AND book.image_id = image.image_id 
                 AND book.category_id = category.category_id";
+
+      if(empty($this->category) && empty($this->searchText)){
+        echo json_encode(array(
+          'message' => "Atleast choose all or choose a category!"
+        ));
+        http_response_code(400);
+        return;
+      }
+
+      if(empty($this->category) && !empty($this->searchText)){
+        echo json_encode(array(
+          'message' => "Atleast choose a category!"
+        ));
+        http_response_code(400);
+        return;
+      }
       
       $this->category = strtolower(htmlspecialchars(strip_tags($this->category)));
       $this->searchText = strtolower(htmlspecialchars(strip_tags($this->searchText)));

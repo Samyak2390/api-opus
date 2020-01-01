@@ -64,7 +64,6 @@
           //remove duplicates from array
           $favArray=array_unique($favArray);
           setcookie('favourite', json_encode($favArray), time()+30*24*60*60);
-          print_r($favArray);
           return true;
         }else{
           return false;
