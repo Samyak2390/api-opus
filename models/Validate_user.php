@@ -20,15 +20,20 @@
 
     private function validateUsername(){
       $val = $this->data['username'];
-      $query = "SELECT * FROM users WHERE username='$val'";
+      if(preg_match('/^[a-zA-Z]*$/', $val)){
+        $query = "SELECT * FROM users WHERE username='$val'";
 
-      $stmt = $this->db->prepare($query);
-      $stmt->execute();
-      $num = $stmt->rowCount();
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $num = $stmt->rowCount();
 
-      if($num > 0){
-        array_push($this->errors, "Username is already taken");
+        if($num > 0){
+          array_push($this->errors, "Username is already taken");
+        }
+      }else{
+        array_push($this->errors, "Username must contain alphabets only.");
       }
+      
 
     }
 
