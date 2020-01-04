@@ -38,6 +38,7 @@ header('content-type: application/json; charset=utf-8');
         'id' => $id,
         'username' => $username,
         'email' => $email,
+        'age' => $age,
         'role' => $role
       );
       array_push($users_arr['data'], $users);

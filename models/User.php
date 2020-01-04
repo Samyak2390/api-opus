@@ -31,7 +31,7 @@
                       email = :email,
                       age = :age,
                       status = 1,
-                      role = 1
+                      role = 0
                       ";
 
           //prepare statement
@@ -140,7 +140,7 @@
 
    public function get_all_users(){
     //create query
-    $query = "SELECT id, username, email, role FROM $this->table u";
+    $query = "SELECT id, username, email, age, role FROM $this->table u";
 
     //prepare statement
     $stmt = $this->conn->prepare($query);
@@ -175,5 +175,93 @@
       return false;
     }
    }
+
+   public function update_user(){
+    try{
+      //create query
+     $query = "UPDATE $this->table
+               SET
+                 username = :username,
+                 password = MD5(:password),
+                 email = :email,
+                 age = :age,
+                 status = 1,
+                 role = 0
+              WHERE
+                id = $this->id
+                 ";
+
+     //prepare statement
+     $stmt = $this->conn->prepare($query);
+
+     //clean data
+     $this->username = trim(htmlspecialchars(strip_tags($this->username)));
+     $this->password = trim(htmlspecialchars(strip_tags($this->password)));
+     $this->email = trim(htmlspecialchars(strip_tags($this->email)));
+     $this->age = trim(htmlspecialchars(strip_tags($this->age)));
+
+     //check if empty
+     if(empty($this->username) || empty($this->password)|| empty($this->email)|| empty($this->age)){
+       echo json_encode(
+         array('message' => 'All fields are Required.')
+       );
+       http_response_code(400);
+       return false;
+     }
+
+     $data = array ("username"=>$this->username, 
+                    "password"=>$this->password,
+                    "email"=>$this->email,
+                    "age"=>$this->age,);
+
+     $validation = new Validate_user($data);
+     $errors = $validation->validateForm();
+
+     if(sizeof($errors) > 0){
+       echo json_encode(
+         array('message' => $errors)
+       );
+       http_response_code(400);
+       return false;
+     }
+
+     //bind data
+     $stmt->bindParam(':username', $this->username);
+     $stmt->bindParam(':password', $this->password);
+     $stmt->bindParam(':email', $this->email);
+     $stmt->bindParam(':age', $this->age);
+
+     //Execute query
+     if($stmt->execute()){
+       return true;
+     }
+   }catch(PDOException $e){
+     $this->error = 'Error: ' . $e -> getMessage();
+     echo json_encode(
+       array('message' => $this->error)
+     );
+     return false;
+   }
+    
   }
+
+  public function delete_user(){
+    try{
+      $query = "DELETE FROM users WHERE id = $this->id";
+      $stmt = $this->conn->prepare($query);
+      if($stmt->execute()){
+        return true;
+      }
+    }catch(PDOException $e){
+      $this->error = 'Error: ' . $e -> getMessage();
+      echo json_encode(
+        array('message' => $this->error)
+      );
+      return false;
+    }
+  }
+
+}
+
+  
 ?>
