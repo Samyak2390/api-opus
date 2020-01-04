@@ -44,7 +44,7 @@
           $this->age = trim(htmlspecialchars(strip_tags($this->age)));
 
           //check if empty
-          if(isset($this->checkbox)){
+          if(isset($this->checkbox) && $this->checkbox){
             if(empty($this->username) || empty($this->password)|| empty($this->email)|| empty($this->age)){
               echo json_encode(
                 array('message' => 'All fields are Required.')
