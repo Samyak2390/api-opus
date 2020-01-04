@@ -44,13 +44,22 @@
           $this->age = trim(htmlspecialchars(strip_tags($this->age)));
 
           //check if empty
-          if(empty($this->username) || empty($this->password)|| empty($this->email)|| empty($this->age)){
+          if(isset($this->checkbox)){
+            if(empty($this->username) || empty($this->password)|| empty($this->email)|| empty($this->age)){
+              echo json_encode(
+                array('message' => 'All fields are Required.')
+              );
+              http_response_code(400);
+              return false;
+            }
+          }else{
             echo json_encode(
-              array('message' => 'All fields are Required.')
+              array('message' => 'You must agree to terms and conditions!')
             );
             http_response_code(400);
             return false;
           }
+          
 
           $data = array ("username"=>$this->username, 
                          "password"=>$this->password,
@@ -126,7 +135,7 @@
           return true;
         }else{
           echo json_encode(
-            array('message' => 'Invalid Username or Password.')
+            array('message' => 'Unregistered User: Invalid Username or Password.')
           );
           http_response_code(400);
           return false;

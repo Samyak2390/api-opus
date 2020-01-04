@@ -1,5 +1,6 @@
 <?php 
- if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+session_start();
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   header('Access-Control-Allow-Origin: *');
   header('Access-Control-Allow-Methods: POST');
   header('Access-Control-Allow-Headers: Authorization, Content-Type');
@@ -33,10 +34,11 @@ header('content-type: application/json; charset=utf-8');
     //generate random number of 20 digits
     $util = new Utils();
     $token = $util->generateToken(20);
-    //start sessioin
-    session_start();
+    //start session
+    
     $_SESSION['token']=$token;
     $_SESSION['role']=$user->role;
+    
     //create array
     $user_arr = array(
       'token' => $token,
@@ -47,9 +49,4 @@ header('content-type: application/json; charset=utf-8');
     );
     //make json
     print_r(json_encode($user_arr));
-    
   }
-
-  
-
-  

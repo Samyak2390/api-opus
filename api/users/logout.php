@@ -1,11 +1,17 @@
 <?php
-  header("Access-Control-Allow-Origin: *");
-  header('content-type: application/json; charset=utf-8');
-  header("Access-Control-Allow-Methods: POST");
-  header("Access-Control-Max-Age: 3600");
-  header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+session_start();
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+  header('Access-Control-Allow-Origin: *');
+  header('Access-Control-Allow-Methods: POST');
+  header('Access-Control-Allow-Headers: Authorization, Content-Type');
+  header('Access-Control-Max-Age: 1728000');
+  header('Content-Length: 0');
+  die();
+}
 
-  session_start();
+header("Access-Control-Allow-Origin: *");
+header('content-type: application/json; charset=utf-8');
+print_r($_SESSION);
   foreach(getallheaders() as $name => $value){
     if(strtolower($name) == 'authorization'){
       if(isset($_SESSION['token'])){

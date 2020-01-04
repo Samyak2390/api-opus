@@ -30,6 +30,9 @@ header('content-type: application/json; charset=utf-8');
   $user->email = $data->email;
   $user->password = $data->password;
   $user->age = $data->age;
+  if(isset($data->checkbox)){
+    $user->checkbox = $data->checkbox;
+  }
 
   if($user->create_user()){
     echo json_encode(
