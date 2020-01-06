@@ -1,4 +1,13 @@
 <?php 
+  session_start();
+  //check if user is logged in and is admin
+  if(!isset($_SESSION['token']) || !isset($_SESSION['role']) || $_SESSION['role'] !== '1'){
+    print_r(json_encode(
+      array('message' => "You are not authorized.")
+    ));
+    http_response_code(401);
+    exit();
+  }
  if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   header('Access-Control-Allow-Origin: *');
   header('Access-Control-Allow-Methods: GET');
@@ -32,7 +41,6 @@ header('content-type: application/json; charset=utf-8');
     $items_arr = array();
     $items_arr['data'] = array();
 
-    //book_id, bookname,year, pages, price, rating, bestseller, description, author_name, publisher_name, category_name, image_name 
     while($row=$result->fetch(PDO::FETCH_ASSOC)){
       extract($row);
       $book_items = array(

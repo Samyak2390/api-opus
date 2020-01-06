@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 header("Access-Control-Allow-Origin: *");
 header('content-type: application/json; charset=utf-8');
-print_r($_SESSION);
+// get authorization token and match it with token in session, if matches then destroy session
   foreach(getallheaders() as $name => $value){
     if(strtolower($name) == 'authorization'){
       if(isset($_SESSION['token'])){
