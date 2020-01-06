@@ -1,13 +1,6 @@
 <?php 
   session_start();
-  //check if user is logged in
-  if(!isset($_SESSION['token'])){
-    print_r(json_encode(
-      array('message' => "You are not authorized.")
-    ));
-    http_response_code(401);
-    exit();
-  }
+ 
  if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   header('Access-Control-Allow-Origin: http://localhost:8081');
   header('Access-Control-Allow-Methods: DELETE');
@@ -20,6 +13,15 @@
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Origin: http://localhost:8081");
 header('content-type: application/json; charset=utf-8');
+
+ //check if user is logged in
+ if(!isset($_SESSION['token'])){
+  print_r(json_encode(
+    array('message' => "You are not authorized.")
+  ));
+  http_response_code(401);
+  exit();
+}
 
   include_once '../../config/Database.php';
   include_once '../../models/Favourite.php';
