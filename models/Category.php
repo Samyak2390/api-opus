@@ -19,6 +19,7 @@
       return $stmt;
     }
 
+    //get all data for a given category
     public function get_category_data(){
       $this->category = strtolower(htmlspecialchars(strip_tags($this->category)));
       if($this->category === 'all'){

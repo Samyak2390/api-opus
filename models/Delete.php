@@ -9,13 +9,14 @@
       $this->conn = $db;
     }
 
+    //Delete item for a given id
+
     public function delete_item(){
       try{
         $query = "DELETE FROM book WHERE book_id = :book_id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':book_id', $this->book_id);
         if($stmt->execute()){
-          //delete from other tables that have no reference in book table
           return true;
         }
       }catch(PDOException $e){

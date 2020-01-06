@@ -9,6 +9,7 @@
       $this->conn = $db;
     }
 
+    //set book_id in favourite cookie
     public function set_favourite(){
       $favArray = array();
       //check if book_id is actually present in the table
@@ -18,19 +19,19 @@
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
       if($row){
+        //create cookie for a first time
         if(!isset($_COOKIE['favourite'])){
           array_push($favArray, $this->book_id);
           setcookie('favourite', json_encode($favArray), time()+30*24*60*60);
-          // echo 'cookie'.$_COOKIE['favourite'];
           return true;
         }
+        //update cookie if already exists
         if(isset($_COOKIE['favourite'])){
           $favArray = json_decode($_COOKIE['favourite'], true);
           array_push($favArray, $this->book_id);
           //remove duplicates from array
           $favArray=array_unique($favArray);
           setcookie('favourite', json_encode($favArray), time()+30*24*60*60);
-          // echo 'cookie'.$_COOKIE['favourite'];
           return true;
         }
       }else{
@@ -43,6 +44,7 @@
       return false;
     }
 
+    //get all book_id in favourite cookie
     public function get_favourite(){
       $query = 'SELECT book_id, bookname, price, rating, description, author_name, image_name 
                 FROM book, author, image
@@ -55,6 +57,7 @@
       return $stmt;
     }
 
+    //remove book_id from a favourite cookie array
     public function delete_favourite(){
       if(isset($_COOKIE['favourite'])){
         $favArray = json_decode($_COOKIE['favourite'], true);
@@ -71,6 +74,7 @@
       }
     }
 
+    //destroy the cookie
     public function delete_all_favourite(){
       if(isset($_COOKIE['favourite'])){
         setcookie('favourite', json_encode(array()), time()-30*24*60*60);

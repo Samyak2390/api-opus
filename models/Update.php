@@ -228,11 +228,8 @@
           $stmt->bindParam(':image_id', $imageId);
 
           if($stmt->execute()){
-            // delete rows that are not referenced
-            //delete from author where author_id not in (select author_id from book)
             return true;
           }else{
-            //delete from all the previous tables that were inserted
             echo 'here';
             $deleteAuthor = "DELETE * FROM author WHERE author_id= $authorId";
             $deletePublisher = "DELETE * FROM publisher WHERE publisher_id = $publisherId";

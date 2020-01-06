@@ -9,6 +9,7 @@
       $this->conn = $db;
     }
 
+    // sort data for a certain category
     public function sort_data(){
       $this->category = strtolower(htmlspecialchars(strip_tags($this->category)));
       $this->sortby = strtolower(htmlspecialchars(strip_tags($this->sortby)));

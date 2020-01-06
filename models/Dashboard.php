@@ -8,6 +8,7 @@
       $this->conn = $db;
     }
 
+    //fetch user, admin and item number
     public function get_dashboard_data(){
       //total no. of users
       $query1 = "SELECT count(*) users FROM users";

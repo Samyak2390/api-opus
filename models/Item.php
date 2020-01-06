@@ -63,7 +63,7 @@
             http_response_code(400);
             return false;
           }
-
+          //if both image fields are not empty
           if(!empty($this->image) && isset($_FILES['imageFile']["tmp_name"])){
             echo json_encode(
               array('message' => 'Only one image is required.')
@@ -104,7 +104,8 @@
   
               //have to change this -----------------------
               $uploadDir = $_SERVER['DOCUMENT_ROOT'].'/WAT/wat2019/api-opus/images/'.$filename;
-  
+              
+              //validate file extension
               if($filetype != "image/jpeg" && $filetype != "image/png" && $filetype != "image/gif"){
                 echo json_encode(
                   array('message' => 'Invalid image file.')
@@ -112,7 +113,8 @@
                 http_response_code(400);
                 return false;
               }
-  
+              
+              //validate file size
               if($filesize > 1000000){
                 echo json_encode(
                   array('message' => 'Image must be less than 1MB.')

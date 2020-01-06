@@ -254,6 +254,7 @@
     
   }
 
+  //delete user for a given id
   public function delete_user(){
     try{
       $query = "DELETE FROM users WHERE id = $this->id";
